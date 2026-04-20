@@ -7,8 +7,7 @@ intents.reactions = True
 intents.message_content = True
 intents.guilds = True
 
-# 👉 Each bot will use these 3 emojis
-EMOJIS = ["☠️", "😭", "💀"]
+EMOJIS = ["😂", "🔥", "💀"]
 
 def create_bot(name):
     client = discord.Client(intents=intents)
@@ -26,7 +25,6 @@ def create_bot(name):
             if reaction.message.author == client.user:
                 return
 
-            # each bot adds 3 different emojis
             for emoji in EMOJIS:
                 await reaction.message.add_reaction(emoji)
 
@@ -34,6 +32,14 @@ def create_bot(name):
             print(f"{name} error:", e)
 
     return client
+
+
+async def run_bot(name, token):
+    try:
+        client = create_bot(name)
+        await client.start(token)
+    except Exception as e:
+        print(f"{name} failed to start:", e)
 
 
 async def main():
@@ -55,8 +61,10 @@ async def main():
     tasks = []
 
     for i, token in enumerate(tokens, start=1):
-        bot = create_bot(f"Bot{i}")
-        tasks.append(bot.start(token))
+        if token:  # prevents crash if missing
+            tasks.append(run_bot(f"Bot{i}", token))
+        else:
+            print(f"Bot{i} missing token!")
 
     await asyncio.gather(*tasks)
 
