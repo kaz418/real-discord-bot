@@ -7,11 +7,7 @@ intents.message_content = True
 
 client = discord.Client(intents=intents)
 
-# 👉 Put your 12 reactions here
-REACTIONS = [
-    "😂", "🔥", "💀", "👏", "❤️", "😎",
-    "😮", "😭", "👍", "👎", "🤯", "🎉"
-]
+EMOJI = "💀"  # 👈 choose the one emoji you want
 
 @client.event
 async def on_ready():
@@ -23,12 +19,12 @@ async def on_reaction_add(reaction, user):
         return
 
     try:
-        # Avoid infinite loops (don’t react to bot’s own reactions)
         if reaction.message.author == client.user:
             return
 
-        for emoji in REACTIONS:
-            await reaction.message.add_reaction(emoji)
+        # add the SAME emoji 12 times
+        for _ in range(12):
+            await reaction.message.add_reaction(EMOJI)
 
     except Exception as e:
         print(e)
