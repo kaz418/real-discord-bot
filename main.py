@@ -1,3 +1,4 @@
+print("STARTING BOT SCRIPT")
 import discord
 import os
 import asyncio
